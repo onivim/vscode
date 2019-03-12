@@ -321,7 +321,7 @@ export class RemoteFileDialog {
 	}
 
 	private setActiveItems(value: string) {
-		if (!this.userValue || (value !== this.userValue.substring(0, value.length))) {
+		if (!this.userValue || (value.length === this.userValue.length + 1)) {
 			const inputBasename = resources.basename(this.remoteUriFrom(value));
 			let hasMatch = false;
 			for (let i = 0; i < this.filePickBox.items.length; i++) {
@@ -329,7 +329,7 @@ export class RemoteFileDialog {
 				const itemBasename = (item.label === '..') ? item.label : resources.basename(item.uri);
 				if ((itemBasename.length >= inputBasename.length) && (itemBasename.substr(0, inputBasename.length).toLowerCase() === inputBasename.toLowerCase())) {
 					this.filePickBox.activeItems = [item];
-					this.filePickBox.value = this.filePickBox.value + itemBasename.substr(inputBasename.length);
+					this.filePickBox.autoComplete = itemBasename.substr(inputBasename.length);
 					this.filePickBox.valueSelection = [value.length, this.filePickBox.value.length];
 					hasMatch = true;
 					break;

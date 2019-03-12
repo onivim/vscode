@@ -331,6 +331,7 @@ class QuickPick<T extends IQuickPickItem> extends QuickInput implements IQuickPi
 	private _valueSelection: Readonly<[number, number]>;
 	private valueSelectionUpdated = true;
 	private _validationMessage: string;
+	private _autoComplete: string | undefined;
 
 	quickNavigate: IQuickNavigateConfiguration;
 
@@ -351,6 +352,12 @@ class QuickPick<T extends IQuickPickItem> extends QuickInput implements IQuickPi
 
 	set value(value: string) {
 		this._value = value || '';
+		this.update();
+	}
+
+	set autoComplete(autoComplete: string) {
+		this._autoComplete = autoComplete;
+		this.value = this.value + autoComplete;
 		this.update();
 	}
 
@@ -528,6 +535,20 @@ class QuickPick<T extends IQuickPickItem> extends QuickInput implements IQuickPi
 							}
 							if (this.canSelectMany) {
 								this.ui.list.domFocus();
+							}
+							break;
+						case KeyCode.Enter:
+						case KeyCode.Ctrl:
+						case KeyCode.Shift:
+						case KeyCode.LeftArrow:
+						case KeyCode.RightArrow:
+						case KeyCode.Tab:
+							break;
+						default:
+							// This is to prevent auto complete functionality from breaking the input's default undo buffer.
+							if (this._autoComplete) {
+								this.ui.inputBox.value = this.ui.inputBox.value.substring(0, this.ui.inputBox.value.length - this._autoComplete.length);
+								this._autoComplete = undefined;
 							}
 							break;
 					}

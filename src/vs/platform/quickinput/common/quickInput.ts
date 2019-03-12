@@ -156,6 +156,8 @@ export interface IQuickPick<T extends IQuickPickItem> extends IQuickInput {
 
 	value: string;
 
+	autoComplete: string | undefined;
+
 	placeholder: string | undefined;
 
 	readonly onDidChangeValue: Event<string>;
