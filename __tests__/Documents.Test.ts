@@ -9,18 +9,20 @@ describe("documents", () => {
         await ExtensionHost.withExtensionHost([extensionPath], async (api) => {
             let extensionActivationPromise = api.waitForMessageOnce("MainThreadExtensionService", "$onDidActivateExtension");
 
+            let separator = process.platform === "win32" ? "\\" : "/"
+
             let onOpenPromise = api.waitForMessageOnce("MainThreadMessageService", "$showMessage", (v) => {
                 let [_, data] = v;
                 let info = JSON.parse(data);
 
-                return info.type === "workspace.onDidOpenTextDocument" && info.filename == "D:\\test1.txt";
+                return info.type === "workspace.onDidOpenTextDocument" && info.filename == "D:" + separator + "test1.txt";
             })
 
             let onClosePromise = api.waitForMessageOnce("MainThreadMessageService", "$showMessage", (v) => {
                 let [_, data] = v;
                 let info = JSON.parse(data);
 
-                return info.type === "workspace.onDidCloseTextDocument" && info.filename == "D:\\test1.txt";
+                return info.type === "workspace.onDidCloseTextDocument" && info.filename == "D:" + separator + "test1.txt";
             })
 
             await api.start();
