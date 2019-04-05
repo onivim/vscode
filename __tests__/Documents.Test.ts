@@ -42,9 +42,9 @@ describe("documents", () => {
             let update = {
                 removedDocuments: [],
                 addedDocuments: [testModelAdded],
-                removedEditors: [],
-                addedEditors: [],
-                newActiveEditor: null,
+                // removedEditors: [],
+                // addedEditors: [],
+                // newActiveEditor: null,
             };
 
             api.sendNotification(["ExtHostDocumentsAndEditors", "$acceptDocumentsAndEditorsDelta", [update]]);
@@ -76,6 +76,13 @@ describe("documents", () => {
                 let info = JSON.parse(data);
 
                 return info.type === "workspace.onDidChangeTextDocument" && info.fullText == "Greetings\nworld";
+            })
+
+            let onChangePromise2 = api.waitForMessageOnce("MainThreadMessageService", "$showMessage", (v) => {
+                let [_, data] = v;
+                let info = JSON.parse(data);
+
+                return info.type === "workspace.onDidChangeTextDocument" && info.fullText == "Greetings2ings\nworld";
             })
 
             await api.start();
@@ -117,8 +124,25 @@ describe("documents", () => {
             };
 
             api.sendNotification(["ExtHostDocuments", "$acceptModelChanged", [testModelAdded.uri, changedEvent, true]]);
-
             await onChangePromise;
+
+            let changedEvent2 = {
+                changes: [{
+                    range: {
+                        startLineNumber: 1,
+                        endLineNumber: 1,
+                        startColumn: 1,
+                        endColumn: 6,
+                    },
+                    text: "Greetings2",
+                }],
+                eol: "\n",
+                versionId: 101,
+            };
+
+            api.sendNotification(["ExtHostDocuments", "$acceptModelChanged", [testModelAdded.uri, changedEvent2, true]]);
+
+            await onChangePromise2;
         });
     });
 });
