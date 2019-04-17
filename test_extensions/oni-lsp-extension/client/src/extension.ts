@@ -53,6 +53,10 @@ export function activate(context: ExtensionContext) {
 		clientOptions
 	);
 
+	console.log = console.error;
+	console.warn = console.error;
+	console.info = console.error;
+
 	// Start the client. This will also launch the server
 	client.start();
 }

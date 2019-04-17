@@ -64,7 +64,7 @@ connection.onInitialized(() => {
 	}
 	if (hasWorkspaceFolderCapability) {
 		connection.workspace.onDidChangeWorkspaceFolders(_event => {
-			connection.console.log('Workspace folder change event received.');
+			// connection.console.log('Workspace folder change event received.');
 		});
 	}
 });
@@ -125,7 +125,10 @@ documents.onDidChangeContent(change => {
 
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 	// In this simple example we get the settings for every validate run.
-	let settings = await getDocumentSettings(textDocument.uri);
+
+	// TODO: This needs to be fixed
+	// let settings = await getDocumentSettings(textDocument.uri);
+	let settings = defaultSettings;
 
 	// The validator creates diagnostics for all uppercase words length 2 and more
 	let text = textDocument.getText();
@@ -172,7 +175,7 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 
 connection.onDidChangeWatchedFiles(_change => {
 	// Monitored files have change in VSCode
-	connection.console.log('We received an file change event');
+	connection.console.error('We received an file change event');
 });
 
 // This handler provides the initial list of the completion items.
@@ -211,25 +214,25 @@ connection.onCompletionResolve(
 	}
 );
 
-/*
+
 connection.onDidOpenTextDocument((params) => {
 	// A text document got opened in VSCode.
 	// params.uri uniquely identifies the document. For documents store on disk this is a file URI.
 	// params.text the initial full content of the document.
-	connection.console.log(`${params.textDocument.uri} opened.`);
+	connection.console.error(`${params.textDocument.uri} opened.`);
 });
 connection.onDidChangeTextDocument((params) => {
 	// The content of a text document did change in VSCode.
 	// params.uri uniquely identifies the document.
 	// params.contentChanges describe the content changes to the document.
-	connection.console.log(`${params.textDocument.uri} changed: ${JSON.stringify(params.contentChanges)}`);
+	connection.console.error(`${params.textDocument.uri} changed: ${JSON.stringify(params.contentChanges)}`);
 });
 connection.onDidCloseTextDocument((params) => {
 	// A text document got closed in VSCode.
 	// params.uri uniquely identifies the document.
-	connection.console.log(`${params.textDocument.uri} closed.`);
+	connection.console.error(`${params.textDocument.uri} closed.`);
 });
-*/
+
 
 // Make the text document manager listen on the connection
 // for open, change and close text document events
