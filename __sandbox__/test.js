@@ -43,7 +43,7 @@ let run = async () => {
     });
     connection.listen();
 
-    let extensionPath = path.join(__dirname, "..", "extensions", "oni-lsp-extension", "package.json")
+    let extensionPath = path.join(__dirname, "..", "test_extensions", "oni-lsp-extension", "package.json")
     let testExtension = JSON.parse(fs.readFileSync(extensionPath));
 
     testExtension.main = path.join(path.dirname(extensionPath), testExtension.main);
@@ -57,7 +57,7 @@ let run = async () => {
             extensions: [{
                 ...testExtension,
                 identifier: "lsp-sample",
-                extensionLocationPath: extensionPath,
+                extensionLocationPath: path.dirname(extensionPath),
             }],
             parentPid: process.pid,
             environment: {
