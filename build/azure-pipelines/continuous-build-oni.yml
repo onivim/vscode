@@ -24,11 +24,11 @@ steps:
 - powershell: |
     yarn install
   workingDirectory: $(Build.SourcesDirectory)/test_extensions/oni-lsp-extension
-  displayName: LSP Extension: Install
+  displayName: LSP Extension Install
 - powershell: |
     yarn compile
   workingDirectory: $(Build.SourcesDirectory)/test_extensions/oni-lsp-extension
-  displayName: LSP Extension: Build
+  displayName: LSP Extension Build
 - powershell: |
     yarn test:oni
   displayName: Run Integration Tests for Onivim 2
