@@ -147,7 +147,7 @@ export let withExtensionHost = async (extensions: string[], f: apiFunction) => {
             let resolvedMetadata = {
                 ...metadata,
                 identifier: metadata.name,
-                extensionLocationPath: ext,
+                extensionLocationPath: path.dirname(ext),
             };
             return resolvedMetadata;
         });
