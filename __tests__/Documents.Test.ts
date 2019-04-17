@@ -2,7 +2,7 @@ import * as path from "path";
 
 import * as ExtensionHost from "./ExtensionHost";
 
-let extensionPath = path.join(__dirname, "..", "extensions", "oni-api-tests", "package.json");
+let extensionPath = path.join(__dirname, "..", "test_extensions", "oni-api-tests", "package.json");
 
 describe("documents", () => {
     test("opening / closing document fires respective events", async () => {
