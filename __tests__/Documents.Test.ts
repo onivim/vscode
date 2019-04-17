@@ -81,42 +81,50 @@ describe("documents", () => {
             await api.start();
             await extensionActivationPromise;
 
-            let testModelAdded = {
-                uri: {
-                    scheme: "file",
-                    path: "D:/test1.txt",
-                },
-                lines: ["hello", "world"],
-                EOL: "\n",
-                modeId: "plaintext",
-                isDirty: true,
+            let uri = {
+                scheme: "file",
+                path: "D:/test1.txt"
             };
 
-            let update = {
-                removedDocuments: [],
-                addedDocuments: [testModelAdded],
-                removedEditors: [],
-                addedEditors: [],
-                newActiveEditor: null,
-            };
+            api.createDocument(uri, ["hello", "world"], "plaintext");
 
-            api.sendNotification(["ExtHostDocumentsAndEditors", "$acceptDocumentsAndEditorsDelta", [update]]);
+            // let testModelAdded = {
+            //     uri: {
+            //         scheme: "file",
+            //         path: "D:/test1.txt",
+            //     },
+            //     lines: ["hello", "world"],
+            //     EOL: "\n",
+            //     modeId: "plaintext",
+            //     isDirty: true,
+            // };
 
-            let changedEvent = {
-                changes: [{
-                    range: {
-                        startLineNumber: 1,
-                        endLineNumber: 1,
-                        startColumn: 1,
-                        endColumn: 6,
-                    },
-                    text: "Greetings",
-                }],
-                eol: "\n",
-                versionId: 100,
-            };
+            // let update = {
+            //     removedDocuments: [],
+            //     addedDocuments: [testModelAdded],
+            //     removedEditors: [],
+            //     addedEditors: [],
+            //     newActiveEditor: null,
+            // };
 
-            api.sendNotification(["ExtHostDocuments", "$acceptModelChanged", [testModelAdded.uri, changedEvent, true]]);
+            // api.sendNotification(["ExtHostDocumentsAndEditors", "$acceptDocumentsAndEditorsDelta", [update]]);
+
+            // let changedEvent = {
+            //     changes: [{
+            //         range: {
+            //             startLineNumber: 1,
+            //             endLineNumber: 1,
+            //             startColumn: 1,
+            //             endColumn: 6,
+            //         },
+            //         text: "Greetings",
+            //     }],
+            //     eol: "\n",
+            //     versionId: 100,
+            // };
+
+            // api.sendNotification(["ExtHostDocuments", "$acceptModelChanged", [testModelAdded.uri, changedEvent, true]]);
+            api.updateDocument(uri, {startLineNumber: 1, endLineNumber: 1, startColumn: 1, endColumn: 6}, "Greetings", 100);
 
             await onChangePromise;
         });
